@@ -4,7 +4,12 @@
 
 Napi::FunctionReference RoboIfConnection::constructor;
 
-// is called when module is registered. will return node module
+
+/*
+
+ Is called when module is registered. will return node module
+
+*/
 Napi::Object RoboIfConnection::Init(Napi::Env env, Napi::Object exports) {
   Napi::HandleScope scope(env);
 
@@ -21,7 +26,16 @@ Napi::Object RoboIfConnection::Init(Napi::Env env, Napi::Object exports) {
   return exports;
 }
 
-// the constructor
+/*
+
+ The constructor
+ called wen instantiating a new RoboIfConnection
+
+ const conn = new libroboint.RoboIfConnection();
+ // do some stuff, and remember to close afterwards... conn.close();
+
+
+*/
 RoboIfConnection::RoboIfConnection(const Napi::CallbackInfo &info) : Napi::ObjectWrap<RoboIfConnection>(info) {
 
   Napi::Env env = info.Env();
@@ -39,6 +53,16 @@ RoboIfConnection::RoboIfConnection(const Napi::CallbackInfo &info) : Napi::Objec
   this->transfer_area = GetFtTransferAreaAddress(this->hFt);
 }
 
+/*
+
+ Closes the connection to the ftDevice. Currently this must be called manually from your JS code.
+
+ const conn = new libroboint.RoboIfConnection();
+ // do some stuff
+ conn.close();
+
+
+*/
 Napi::Value RoboIfConnection::Close(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
 
