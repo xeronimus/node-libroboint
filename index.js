@@ -1,2 +1,11 @@
 const addon = require('bindings')('nlibroboint');
-exports.hello = addon.greetHello;
+
+
+const api = {
+    initFtUsbDeviceList: addon.initFtUsbDeviceList,
+    getNumFtUsbDevice: addon.getNumFtUsbDevice,
+    getFtUsbDeviceHandle: addon.getFtUsbDeviceHandle
+};
+
+
+module.exports = api;

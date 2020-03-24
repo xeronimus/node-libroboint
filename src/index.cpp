@@ -1,31 +1,49 @@
+
+#include <roboint.h>
+
 #include <napi.h>
+
 #include <string>
-#include "greeting.h"
 
-// native C++ function that is assigned to `greetHello` property on `exports` object
-Napi::String greetHello(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
 
-    // call `helloUser` function from `greeting.cpp` file
-    std::string user = (std::string) info[0].ToString();
-    std::string result = helloUser( user );
-
-    // return new `Napi::String` value
-    return Napi::String::New(env, result);
+void _initFtUsbDeviceList(const Napi::CallbackInfo& info) {
+    InitFtUsbDeviceList();
 }
 
-// callback method when module is registered with Node.js
+Napi::Number _getNumFtUsbDevice(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+
+    unsigned int result = GetNumFtUsbDevice();
+
+    return Napi::Number::New(env, result);
+}
+
+void _getFtUsbDeviceHandle(const Napi::CallbackInfo& info) {
+
+    unsigned char deviceNr = info[0].As<Napi::Number>().Uint32Value();
+
+    FT_HANDLE hFt = GetFtUsbDeviceHandle(deviceNr);
+}
+
+
+
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
 
-    // set a key on `exports` object
     exports.Set(
-        Napi::String::New(env, "greetHello"), // property name => "greetHello"
-        Napi::Function::New(env, greetHello) // property value => `greetHello` function
+        "initFtUsbDeviceList",
+        Napi::Function::New(env, _initFtUsbDeviceList)
     );
 
-    // return `exports` object (always)
+    exports.Set(
+        "getNumFtUsbDevice",
+        Napi::Function::New(env, _getNumFtUsbDevice)
+    );
+    exports.Set(
+        "getFtUsbDeviceHandle",
+        Napi::Function::New(env, _getFtUsbDeviceHandle)
+    );
+
     return exports;
 }
 
-// register `greet` module which calls `Init` method
-NODE_API_MODULE(greet, Init)
+NODE_API_MODULE(nlibroboint, Init)
