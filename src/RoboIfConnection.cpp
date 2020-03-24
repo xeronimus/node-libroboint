@@ -4,7 +4,6 @@
 
 Napi::FunctionReference RoboIfConnection::constructor;
 
-
 /*
 
  Is called when module is registered. will return node module
@@ -13,11 +12,9 @@ Napi::FunctionReference RoboIfConnection::constructor;
 Napi::Object RoboIfConnection::Init(Napi::Env env, Napi::Object exports) {
   Napi::HandleScope scope(env);
 
-  Napi::Function func =
-      DefineClass(env, "RoboIfConnection", {
-                                               InstanceMethod("setMotor", &RoboIfConnection::SetMotor),
-                                               InstanceMethod("close", &RoboIfConnection::Close),
-                                           });
+  Napi::Function func = DefineClass(env, "RoboIfConnection", {InstanceMethod("setMotor", &RoboIfConnection::SetMotor),
+                                                              InstanceMethod("getInput", &RoboIfConnection::GetInput),
+                                                              InstanceMethod("close", &RoboIfConnection::Close)});
 
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
@@ -29,7 +26,7 @@ Napi::Object RoboIfConnection::Init(Napi::Env env, Napi::Object exports) {
 /*
 
  The constructor
- called wen instantiating a new RoboIfConnection
+ called when instantiating a new RoboIfConnection
 
  const conn = new libroboint.RoboIfConnection();
  // do some stuff, and remember to close afterwards... conn.close();
@@ -69,6 +66,7 @@ Napi::Value RoboIfConnection::Close(const Napi::CallbackInfo &info) {
   if (this->hFt) {
     StopFtTransferArea(this->hFt);
     CloseFtDevice(this->hFt);
+    this->transfer_area = NULL;
   }
 
   return env.Null();
@@ -90,7 +88,7 @@ Napi::Value RoboIfConnection::SetMotor(const Napi::CallbackInfo &info) {
 
   if (!this->transfer_area) {
     Napi::TypeError::New(env, "Cannot setMotor, not connected...").ThrowAsJavaScriptException();
-     return env.Null();
+    return env.Null();
   }
 
   //--   check input parameters
@@ -149,4 +147,49 @@ Napi::Value RoboIfConnection::SetMotor(const Napi::CallbackInfo &info) {
   }
 
   return env.Null();
+}
+
+Napi::Value RoboIfConnection::GetInput(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+
+  if (!this->transfer_area) {
+    Napi::TypeError::New(env, "Cannot getInput, not connected...").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  //--   check input parameters
+  if (info.Length() < 1) {
+    Napi::TypeError::New(env, "Please specify the input number (1-32)").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  if (!info[0].IsNumber()) {
+    Napi::TypeError::New(env, "Please specify the input number (1-32)").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  int inputNumber = info[0].As<Napi::Number>().Int32Value();
+
+  if (inputNumber < 1 || inputNumber > 32) {
+    Napi::TypeError::New(env, "Please specify the input number (1-32)").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  int inputState = 0;
+
+  if (inputNumber <= 8) {
+    inputState = (this->transfer_area->E_Main & (1 << (inputNumber - 1))) >> (inputNumber - 1);
+  } else if (inputNumber <= 16) {
+    inputNumber -= 8;
+    inputState = (this->transfer_area->E_Sub1 & (1 << (inputNumber - 1))) >> (inputNumber - 1);
+  } else if (inputNumber <= 24) {
+    inputNumber -= 16;
+    inputState = (this->transfer_area->E_Sub2 & (1 << (inputNumber - 1))) >> (inputNumber - 1);
+  } else if (inputNumber <= 32) {
+    inputNumber -= 24;
+    inputState = (this->transfer_area->E_Sub3 & (1 << (inputNumber - 1))) >> (inputNumber - 1);
+  }
+
+  Napi::Number result = Napi::Number::New(env, inputState);
+  return result;
 }

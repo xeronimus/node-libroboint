@@ -16,6 +16,7 @@ private:
 
   Napi::Value SetMotor(const Napi::CallbackInfo &info);
   Napi::Value Close(const Napi::CallbackInfo &info);
+  Napi::Value GetInput(const Napi::CallbackInfo &info);
 
   FT_HANDLE hFt;
   FT_TRANSFER_AREA *transfer_area;
