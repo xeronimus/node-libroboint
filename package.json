@@ -2,8 +2,9 @@
   "name": "node-libroboint",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
+    "formatter": "clang-format -i -style=file src/*",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node-gyp build",
     "rebuild": "node-gyp rebuild"

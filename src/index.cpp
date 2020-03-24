@@ -1,49 +1,20 @@
 
-#include <roboint.h>
+
+#include "RoboIfConnection.h"
 
 #include <napi.h>
 
 #include <string>
 
+/*
+ some resources that might be helpful
 
-void _initFtUsbDeviceList(const Napi::CallbackInfo& info) {
-    InitFtUsbDeviceList();
-}
+ - good guide
+ https://itnext.io/a-simple-guide-to-load-c-c-code-into-node-js-javascript-applications-3fcccf54fd32
+ - node-gyp repo https://github.com/nodejs/node-gyp
+ - node-addon-api https://github.com/nodejs/node-addon-api
+*/
 
-Napi::Number _getNumFtUsbDevice(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
+Napi::Object InitAll(Napi::Env env, Napi::Object exports) { return RoboIfConnection::Init(env, exports); }
 
-    unsigned int result = GetNumFtUsbDevice();
-
-    return Napi::Number::New(env, result);
-}
-
-void _getFtUsbDeviceHandle(const Napi::CallbackInfo& info) {
-
-    unsigned char deviceNr = info[0].As<Napi::Number>().Uint32Value();
-
-    FT_HANDLE hFt = GetFtUsbDeviceHandle(deviceNr);
-}
-
-
-
-Napi::Object Init(Napi::Env env, Napi::Object exports) {
-
-    exports.Set(
-        "initFtUsbDeviceList",
-        Napi::Function::New(env, _initFtUsbDeviceList)
-    );
-
-    exports.Set(
-        "getNumFtUsbDevice",
-        Napi::Function::New(env, _getNumFtUsbDevice)
-    );
-    exports.Set(
-        "getFtUsbDeviceHandle",
-        Napi::Function::New(env, _getFtUsbDeviceHandle)
-    );
-
-    return exports;
-}
-
-NODE_API_MODULE(nlibroboint, Init)
+NODE_API_MODULE(nlibroboint, InitAll)
