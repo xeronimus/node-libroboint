@@ -14,6 +14,7 @@ Napi::Object RoboInterface::Init(Napi::Env env, Napi::Object exports) {
 
   Napi::Function func = DefineClass(env, "RoboInterface", {InstanceMethod("setMotor", &RoboInterface::SetMotor),
                                                            InstanceMethod("getInput", &RoboInterface::GetInput),
+                                                           InstanceMethod("hasInterface", &RoboInterface::HasInterface),
                                                            InstanceMethod("close", &RoboInterface::Close)});
 
   constructor = Napi::Persistent(func);
@@ -28,8 +29,8 @@ Napi::Object RoboInterface::Init(Napi::Env env, Napi::Object exports) {
  The constructor
  called when instantiating a new RoboInterface
 
- const conn = new libroboint.RoboInterface();
- // do some stuff, and remember to close afterwards... conn.close();
+ const ri = new libroboint.RoboInterface();
+ // do some stuff, and remember to close afterwards... ri.close();
 
 
 */
@@ -52,11 +53,33 @@ RoboInterface::RoboInterface(const Napi::CallbackInfo &info) : Napi::ObjectWrap<
 
 /*
 
+ Tells if we have a connection to the Interface
+
+ Useful to call after the constructor., e.g:
+        const ri = new libroboint.RoboInterface();
+
+        if(ri.hasInterface()){
+         // do something
+        }
+
+*/
+Napi::Value RoboInterface::HasInterface(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+
+  if (this->hFt && this->transfer_area) {
+    return Napi::Boolean::New(env, true);
+  } else {
+    return Napi::Boolean::New(env, false);
+  }
+}
+
+/*
+
  Closes the connection to the ftDevice. Currently this must be called manually from your JS code.
 
- const conn = new libroboint.RoboInterface();
+ const ri = new libroboint.RoboInterface();
  // do some stuff
- conn.close();
+ ri.close();
 
 
 */
