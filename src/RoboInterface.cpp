@@ -2,6 +2,11 @@
 
 #include <roboint.h>
 
+// Default Distance sensor-Input configuration
+#define IF_DS_INPUT_TOL 20     // Toleranz (Standard)
+#define IF_DS_INPUT_REP 3      // Repeat (Standard)
+#define IF_DS_INPUT_THRESH 100 // Threshold (Standard)
+
 Napi::FunctionReference RoboInterface::constructor;
 
 /*
@@ -24,6 +29,52 @@ Napi::Object RoboInterface::Init(Napi::Env env, Napi::Object exports) {
   return exports;
 }
 
+RI_OPTIONS parseConstructorOptions(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+
+  RI_OPTIONS opts;
+
+  // defaults
+  opts.deviceNumber = 0;
+  opts.usbSerial = 0;
+  opts.startTransferArea = true;
+  opts.serialDevice = NULL;
+  opts.enableDistance = false;
+
+  if (info.Length() < 1) {
+    return opts;
+  }
+
+  if (!info[0].IsObject()) {
+    Napi::TypeError::New(env, "If you want to configure the interface, pass in a options object..")
+        .ThrowAsJavaScriptException();
+    return opts;
+  }
+
+  // we have a options object
+  Napi::Object options = info[0].As<Napi::Object>();
+
+  if (options.Has("deviceNumber")) {
+    opts.deviceNumber = options.Get("deviceNumber").As<Napi::Number>().Uint32Value();
+  }
+  if (options.Has("usbSerial")) {
+    opts.usbSerial = options.Get("usbSerial").As<Napi::Number>().Uint32Value();
+  }
+  if (options.Has("serialDevice")) {
+    std::string sdValue = options.Get("serialDevice").As<Napi::String>().Utf8Value();
+    opts.serialDevice = &sdValue[0u];
+  }
+
+  if (options.Has("startTransferArea")) {
+    opts.startTransferArea = options.Get("startTransferArea").As<Napi::Boolean>().Value();
+  }
+  if (options.Has("enableDistance")) {
+    opts.enableDistance = options.Get("enableDistance").As<Napi::Boolean>().Value();
+  }
+
+  return opts;
+}
+
 /*
 
  The constructor
@@ -35,20 +86,36 @@ Napi::Object RoboInterface::Init(Napi::Env env, Napi::Object exports) {
 
 */
 RoboInterface::RoboInterface(const Napi::CallbackInfo &info) : Napi::ObjectWrap<RoboInterface>(info) {
-
   Napi::Env env = info.Env();
   Napi::HandleScope scope(env);
 
-  // initialize
-  InitFtUsbDeviceList();
+  // initialize connection according to options
+  RI_OPTIONS opts = parseConstructorOptions(info);
 
-  this->hFt = GetFtUsbDeviceHandle(0);
+  if (opts.serialDevice) {
+    this->hFt = OpenFtCommDevice(opts.serialDevice, opts.serialType, 10);
+  } else {
+    InitFtUsbDeviceList();
+    if (opts.usbSerial > 0) {
+      this->hFt = GetFtUsbDeviceHandleSerialNr(opts.usbSerial, 1);
+    } else {
+      this->hFt = GetFtUsbDeviceHandle(opts.deviceNumber);
+    }
+    OpenFtUsbDevice(this->hFt);
+  }
 
-  // Open connection
-  OpenFtUsbDevice(this->hFt);
+  if (opts.enableDistance) {
+    SetFtDistanceSensorMode(this->hFt, 1, IF_DS_INPUT_TOL, IF_DS_INPUT_TOL, IF_DS_INPUT_THRESH, IF_DS_INPUT_THRESH,
+                            IF_DS_INPUT_REP, IF_DS_INPUT_REP);
+  } else {
+    SetFtDistanceSensorMode(this->hFt, 0, IF_DS_INPUT_TOL, IF_DS_INPUT_TOL, IF_DS_INPUT_THRESH, IF_DS_INPUT_THRESH,
+                            IF_DS_INPUT_REP, IF_DS_INPUT_REP);
+  }
 
-  StartFtTransferArea(this->hFt, NULL);
-  this->transfer_area = GetFtTransferAreaAddress(this->hFt);
+  if (opts.startTransferArea) {
+    StartFtTransferArea(this->hFt, NULL);
+    this->transfer_area = GetFtTransferAreaAddress(this->hFt);
+  }
 }
 
 /*
@@ -86,10 +153,13 @@ Napi::Value RoboInterface::HasInterface(const Napi::CallbackInfo &info) {
 Napi::Value RoboInterface::Close(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
 
-  if (this->hFt) {
+  if (this->transfer_area) {
     StopFtTransferArea(this->hFt);
-    CloseFtDevice(this->hFt);
     this->transfer_area = NULL;
+  }
+
+  if (this->hFt) {
+    CloseFtDevice(this->hFt);
   }
 
   return env.Null();
