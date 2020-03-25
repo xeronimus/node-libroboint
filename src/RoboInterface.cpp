@@ -1,39 +1,39 @@
-#include "RoboIfConnection.h"
+#include "RoboInterface.h"
 
 #include <roboint.h>
 
-Napi::FunctionReference RoboIfConnection::constructor;
+Napi::FunctionReference RoboInterface::constructor;
 
 /*
 
  Is called when module is registered. will return node module
 
 */
-Napi::Object RoboIfConnection::Init(Napi::Env env, Napi::Object exports) {
+Napi::Object RoboInterface::Init(Napi::Env env, Napi::Object exports) {
   Napi::HandleScope scope(env);
 
-  Napi::Function func = DefineClass(env, "RoboIfConnection", {InstanceMethod("setMotor", &RoboIfConnection::SetMotor),
-                                                              InstanceMethod("getInput", &RoboIfConnection::GetInput),
-                                                              InstanceMethod("close", &RoboIfConnection::Close)});
+  Napi::Function func = DefineClass(env, "RoboInterface", {InstanceMethod("setMotor", &RoboInterface::SetMotor),
+                                                           InstanceMethod("getInput", &RoboInterface::GetInput),
+                                                           InstanceMethod("close", &RoboInterface::Close)});
 
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
 
-  exports.Set("RoboIfConnection", func);
+  exports.Set("RoboInterface", func);
   return exports;
 }
 
 /*
 
  The constructor
- called when instantiating a new RoboIfConnection
+ called when instantiating a new RoboInterface
 
- const conn = new libroboint.RoboIfConnection();
+ const conn = new libroboint.RoboInterface();
  // do some stuff, and remember to close afterwards... conn.close();
 
 
 */
-RoboIfConnection::RoboIfConnection(const Napi::CallbackInfo &info) : Napi::ObjectWrap<RoboIfConnection>(info) {
+RoboInterface::RoboInterface(const Napi::CallbackInfo &info) : Napi::ObjectWrap<RoboInterface>(info) {
 
   Napi::Env env = info.Env();
   Napi::HandleScope scope(env);
@@ -54,13 +54,13 @@ RoboIfConnection::RoboIfConnection(const Napi::CallbackInfo &info) : Napi::Objec
 
  Closes the connection to the ftDevice. Currently this must be called manually from your JS code.
 
- const conn = new libroboint.RoboIfConnection();
+ const conn = new libroboint.RoboInterface();
  // do some stuff
  conn.close();
 
 
 */
-Napi::Value RoboIfConnection::Close(const Napi::CallbackInfo &info) {
+Napi::Value RoboInterface::Close(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
 
   if (this->hFt) {
@@ -78,12 +78,12 @@ Napi::Value RoboIfConnection::Close(const Napi::CallbackInfo &info) {
 
  Example Usage in JS:
 
- connection.setMotor(1, 0); // stop motor 1
- connection.setMotor(2, 1, 5); // start motor 2, direction left (1) with speed 5
- connection.setMotor(2, 2); // start motor 2, direction right  (2) with default speed (max = 7)
+ ri.setMotor(1, 0); // stop motor 1
+ ri.setMotor(2, 1, 5); // start motor 2, direction left (1) with speed 5
+ ri.setMotor(2, 2); // start motor 2, direction right  (2) with default speed (max = 7)
 
 */
-Napi::Value RoboIfConnection::SetMotor(const Napi::CallbackInfo &info) {
+Napi::Value RoboInterface::SetMotor(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
 
   if (!this->transfer_area) {
@@ -149,7 +149,7 @@ Napi::Value RoboIfConnection::SetMotor(const Napi::CallbackInfo &info) {
   return env.Null();
 }
 
-Napi::Value RoboIfConnection::GetInput(const Napi::CallbackInfo &info) {
+Napi::Value RoboInterface::GetInput(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
 
   if (!this->transfer_area) {

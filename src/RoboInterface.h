@@ -5,11 +5,11 @@
 
 #include <napi.h>
 
-class RoboIfConnection : public Napi::ObjectWrap<RoboIfConnection> {
+class RoboInterface : public Napi::ObjectWrap<RoboInterface> {
 
 public:
   static Napi::Object Init(Napi::Env env, Napi::Object exports);
-  RoboIfConnection(const Napi::CallbackInfo &info);
+  RoboInterface(const Napi::CallbackInfo &info);
 
 private:
   static Napi::FunctionReference constructor;

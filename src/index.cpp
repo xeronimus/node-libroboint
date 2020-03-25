@@ -1,5 +1,5 @@
 
-#include "RoboIfConnection.h"
+#include "RoboInterface.h"
 
 #include <napi.h>
 
@@ -14,6 +14,6 @@
  - node-addon-api https://github.com/nodejs/node-addon-api
 */
 
-Napi::Object InitAll(Napi::Env env, Napi::Object exports) { return RoboIfConnection::Init(env, exports); }
+Napi::Object InitAll(Napi::Env env, Napi::Object exports) { return RoboInterface::Init(env, exports); }
 
 NODE_API_MODULE(nlibroboint, InitAll)
