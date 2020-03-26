@@ -1,13 +1,15 @@
-#
+# node.js wrapper around libroboint
 
+Thanks to https://gitlab.com/Humpelstilzchen/libroboint
+
+
+This npm module allows you to communicate with the [Fischertechnik](https://www.fischertechnik.de/) Robo Interface via [Node.JS](https://nodejs.org/)
 
  
 
+## Setup
 
-
-
-
-# installing libroboint
+## installing libroboint
 
 First, add the repository, see http://vontaene.de/apt/README.txt
 
@@ -18,17 +20,8 @@ $ sudo apt-get update
 $ sudo apt-get install libroboint-all 
 ```
 
-```
-$ dpkg -L libroboint-dev
-/.
-/usr
-/usr/include
-/usr/include/roboint.h
-/usr/lib
-/usr/share
-/usr/share/doc
-/usr/share/doc/libroboint-dev
-/usr/share/doc/libroboint-dev/changelog.Debian.gz
-/usr/share/doc/libroboint-dev/copyright
-```
+## installing node-libroboint 
 
+```
+$ npm i libroboint
+```
