@@ -7,7 +7,7 @@
     "format": "npm run format:C && npm run format:JS",
     "format:C": "clang-format -i -style=file src/*",
     "format:JS": "prettier --single-quote --print-width 120 --arrow-parens always --tab-width 4 --no-bracket-spacing --write '{lib,examples}/**/*.js'",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "exit 0",
     "build": "node-gyp build",
     "rebuild": "node-gyp rebuild",
     "prebuild": "npm run format"
