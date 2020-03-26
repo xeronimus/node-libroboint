@@ -17,13 +17,23 @@ Napi::FunctionReference RoboInterface::constructor;
 Napi::Object RoboInterface::Init(Napi::Env env, Napi::Object exports) {
   Napi::HandleScope scope(env);
 
-  Napi::Function func =
-      DefineClass(env, "RoboInterface", {InstanceMethod("setMotor", &RoboInterface::SetMotor),
-                                         InstanceMethod("getInput", &RoboInterface::GetInput),
-                                         InstanceMethod("hasInterface", &RoboInterface::HasInterface),
-                                         InstanceMethod("getDeviceType", &RoboInterface::GetDeviceType),
-                                         InstanceMethod("getDeviceTypeString", &RoboInterface::GetDeviceTypeString),
-                                         InstanceMethod("close", &RoboInterface::Close)});
+  Napi::Function func = DefineClass(
+      env, "RoboInterface",
+      {
+
+          InstanceMethod("hasInterface", &RoboInterface::HasInterface), InstanceMethod("close", &RoboInterface::Close),
+
+          InstanceMethod("getDeviceType", &RoboInterface::GetDeviceType),
+          InstanceMethod("getDeviceTypeString", &RoboInterface::GetDeviceTypeString),
+
+          InstanceMethod("setMotor", &RoboInterface::SetMotor),
+
+          InstanceMethod("getInput", &RoboInterface::GetInput), InstanceMethod("getA1", &RoboInterface::GetA1),
+          InstanceMethod("getA2", &RoboInterface::GetA2), InstanceMethod("getAX", &RoboInterface::GetAX),
+          InstanceMethod("getAY", &RoboInterface::GetAY), InstanceMethod("getD1", &RoboInterface::GetD1),
+          InstanceMethod("getD2", &RoboInterface::GetD2),
+
+      });
 
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
@@ -94,6 +104,8 @@ RI_OPTIONS parseConstructorOptions(const Napi::CallbackInfo &info) {
 
 */
 RoboInterface::RoboInterface(const Napi::CallbackInfo &info) : Napi::ObjectWrap<RoboInterface>(info) {
+  this->transfer_area = NULL;
+
   Napi::Env env = info.Env();
   Napi::HandleScope scope(env);
 
@@ -342,4 +354,102 @@ Napi::Value RoboInterface::GetInput(const Napi::CallbackInfo &info) {
 
   Napi::Number result = Napi::Number::New(env, inputState);
   return result;
+}
+
+/*
+
+ helper function that reads a anlog input (A1, A2, AX, AY, D1, D2)
+
+*/
+Napi::Value _getAnalogInput(FT_TRANSFER_AREA *transfer_area, int analogInput, const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+
+  if (!transfer_area) {
+    Napi::TypeError::New(env, "Cannot get analog input, not connected...").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  unsigned short analogValue;
+
+  switch (analogInput) {
+  case 1:
+    analogValue = transfer_area->A1;
+    break;
+  case 2:
+    analogValue = transfer_area->A2;
+    break;
+  case 3:
+    analogValue = transfer_area->AY;
+    break;
+  case 4:
+    analogValue = transfer_area->AX;
+    break;
+  case 5:
+    analogValue = transfer_area->D1;
+    break;
+  case 6:
+    analogValue = transfer_area->D2;
+    break;
+
+  default:
+    analogValue = transfer_area->A1;
+  }
+
+  Napi::Number result = Napi::Number::New(env, analogValue);
+
+  return result;
+}
+
+/*
+
+ Reads analog voltage input A1
+
+*/
+Napi::Value RoboInterface::GetA1(const Napi::CallbackInfo &info) {
+  return _getAnalogInput(this->transfer_area, 1, info);
+}
+
+/*
+
+ Reads analog voltage input A2
+
+*/
+Napi::Value RoboInterface::GetA2(const Napi::CallbackInfo &info) {
+  return _getAnalogInput(this->transfer_area, 2, info);
+}
+
+/*
+
+ Reads analog resistor input AX
+
+*/
+Napi::Value RoboInterface::GetAX(const Napi::CallbackInfo &info) {
+  return _getAnalogInput(this->transfer_area, 3, info);
+}
+
+/*
+
+ Reads analog resistor input AY
+
+*/
+Napi::Value RoboInterface::GetAY(const Napi::CallbackInfo &info) {
+  return _getAnalogInput(this->transfer_area, 4, info);
+}
+
+/*
+
+ Reads analog (voltage or distance) input D1
+
+*/
+Napi::Value RoboInterface::GetD1(const Napi::CallbackInfo &info) {
+  return _getAnalogInput(this->transfer_area, 5, info);
+}
+
+/*
+
+ Reads analog (voltage or distance) input D2
+
+*/
+Napi::Value RoboInterface::GetD2(const Napi::CallbackInfo &info) {
+  return _getAnalogInput(this->transfer_area, 6, info);
 }

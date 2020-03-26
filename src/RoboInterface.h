@@ -36,12 +36,21 @@ public:
 private:
   static Napi::FunctionReference constructor;
 
-  Napi::Value SetMotor(const Napi::CallbackInfo &info);
-  Napi::Value Close(const Napi::CallbackInfo &info);
-  Napi::Value GetInput(const Napi::CallbackInfo &info);
   Napi::Value HasInterface(const Napi::CallbackInfo &info);
+  Napi::Value Close(const Napi::CallbackInfo &info);
+
   Napi::Value GetDeviceType(const Napi::CallbackInfo &info);
   Napi::Value GetDeviceTypeString(const Napi::CallbackInfo &info);
+
+  Napi::Value SetMotor(const Napi::CallbackInfo &info);
+
+  Napi::Value GetInput(const Napi::CallbackInfo &info);
+  Napi::Value GetA1(const Napi::CallbackInfo &info);
+  Napi::Value GetA2(const Napi::CallbackInfo &info);
+  Napi::Value GetAX(const Napi::CallbackInfo &info);
+  Napi::Value GetAY(const Napi::CallbackInfo &info);
+  Napi::Value GetD1(const Napi::CallbackInfo &info);
+  Napi::Value GetD2(const Napi::CallbackInfo &info);
 
   FT_HANDLE hFt;
   FT_TRANSFER_AREA *transfer_area;
