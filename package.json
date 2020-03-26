@@ -4,10 +4,13 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "formatter": "clang-format -i -style=file src/*",
+    "format": "npm run format:C && npm run format:JS",
+    "format:C": "clang-format -i -style=file src/*",
+    "format:JS": "prettier --single-quote --print-width 120 --arrow-parens always --tab-width 4 --no-bracket-spacing --write '{lib,examples}/**/*.js'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node-gyp build",
-    "rebuild": "node-gyp rebuild"
+    "rebuild": "node-gyp rebuild",
+    "prebuild": "npm run format"
   },
   "keywords": [],
   "author": "",
@@ -15,5 +18,8 @@
   "dependencies": {
     "bindings": "^1.5.0",
     "node-addon-api": "^2.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.2"
   }
 }
