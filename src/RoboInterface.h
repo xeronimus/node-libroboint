@@ -40,6 +40,8 @@ private:
   Napi::Value Close(const Napi::CallbackInfo &info);
   Napi::Value GetInput(const Napi::CallbackInfo &info);
   Napi::Value HasInterface(const Napi::CallbackInfo &info);
+  Napi::Value GetDeviceType(const Napi::CallbackInfo &info);
+  Napi::Value GetDeviceTypeString(const Napi::CallbackInfo &info);
 
   FT_HANDLE hFt;
   FT_TRANSFER_AREA *transfer_area;

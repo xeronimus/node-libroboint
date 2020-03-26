@@ -17,10 +17,13 @@ Napi::FunctionReference RoboInterface::constructor;
 Napi::Object RoboInterface::Init(Napi::Env env, Napi::Object exports) {
   Napi::HandleScope scope(env);
 
-  Napi::Function func = DefineClass(env, "RoboInterface", {InstanceMethod("setMotor", &RoboInterface::SetMotor),
-                                                           InstanceMethod("getInput", &RoboInterface::GetInput),
-                                                           InstanceMethod("hasInterface", &RoboInterface::HasInterface),
-                                                           InstanceMethod("close", &RoboInterface::Close)});
+  Napi::Function func =
+      DefineClass(env, "RoboInterface", {InstanceMethod("setMotor", &RoboInterface::SetMotor),
+                                         InstanceMethod("getInput", &RoboInterface::GetInput),
+                                         InstanceMethod("hasInterface", &RoboInterface::HasInterface),
+                                         InstanceMethod("getDeviceType", &RoboInterface::GetDeviceType),
+                                         InstanceMethod("getDeviceTypeString", &RoboInterface::GetDeviceTypeString),
+                                         InstanceMethod("close", &RoboInterface::Close)});
 
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
@@ -29,6 +32,11 @@ Napi::Object RoboInterface::Init(Napi::Env env, Napi::Object exports) {
   return exports;
 }
 
+/*
+
+Parses constructor arguments into RI_OPTIONS
+
+*/
 RI_OPTIONS parseConstructorOptions(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
 
@@ -115,6 +123,51 @@ RoboInterface::RoboInterface(const Napi::CallbackInfo &info) : Napi::ObjectWrap<
   if (opts.startTransferArea) {
     StartFtTransferArea(this->hFt, NULL);
     this->transfer_area = GetFtTransferAreaAddress(this->hFt);
+  }
+}
+
+/*
+
+ Returns the type of the interface (as integer), which is one of
+
+ NO_FT_DEVICE                0       // No ft Device connected
+ FT_AUTO_TYPE                1       // Search for Device
+ FT_INTELLIGENT_IF           10      // FT-Intelligent Interface connect (serial)
+ FT_INTELLIGENT_IF_SLAVE     20      // FT-Intelligent Interface with Extension connect (serial)
+ FT_ROBO_IF_IIM              50      // FT-Robo Interface with Intelligent-Interface-Modus connect (serial)
+ FT_ROBO_IF_USB              60      // FT-Robo Interface connect with USB-Port
+ FT_ROBO_IF_COM              70      // FT-Robo Interface connect with COM- (serial-) Port
+ FT_ROBO_IF_OVER_RF          80      // FT-Robo Interface connect over RF-Data-Link
+ FT_ROBO_IO_EXTENSION        90      // FT-Robo I/O-Extension
+ FT_ROBO_LT_CONTROLLER       91      // FT-Robo LT Controller
+ FT_ROBO_RF_DATA_LINK        110     // FT-Robo RF Data Link
+ FT_SOUND_AND_LIGHTS         120     // FT-Sound + Lights Module
+
+*/
+Napi::Value RoboInterface::GetDeviceType(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+
+  if (this->hFt) {
+    return Napi::Number::New(env, GetFtDeviceTyp(this->hFt));
+  } else {
+    return env.Null();
+  }
+}
+
+/*
+
+Returns a string that identifies this interface in a human readable form like "Robo Interface"
+
+*/
+Napi::Value RoboInterface::GetDeviceTypeString(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+
+  if (this->hFt) {
+    char *result = new char[128];
+    GetFtDeviceTypeString(this->hFt, result, 128);
+    return Napi::String::New(env, result);
+  } else {
+    return env.Null();
   }
 }
 
