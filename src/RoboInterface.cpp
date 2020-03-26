@@ -295,6 +295,10 @@ Napi::Value RoboInterface::SetMotor(const Napi::CallbackInfo &info) {
   return env.Null();
 }
 
+/*
+ Gets the state of a digital input. Pass in the number of the input (1...Max).
+ Will return 1 or 0
+*/
 Napi::Value RoboInterface::GetInput(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
 
