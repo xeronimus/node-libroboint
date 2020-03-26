@@ -1,7 +1,7 @@
 {
-  "name": "node-libroboint",
-  "version": "1.0.0",
-  "description": "",
+  "name": "libroboint",
+  "version": "0.0.2",
+  "description": "node.js wrapper around libroboint",
   "main": "lib/index.js",
   "scripts": {
     "format": "npm run format:C && npm run format:JS",
