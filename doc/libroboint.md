@@ -27,10 +27,9 @@
     -   [Examples][23]
 -   [loop][24]
     -   [Parameters][25]
--   [checkCounters][26]
--   [useCounter][27]
-    -   [Parameters][28]
-    -   [Examples][29]
+-   [useCounter][26]
+    -   [Parameters][27]
+    -   [Examples][28]
 
 ## connect
 
@@ -38,12 +37,12 @@ Connect to the Robo Interface
 
 ### Parameters
 
--   `opts` **[object][30]** The connection options
-    -   `opts.deviceNumber` **[number][31]** The number of the device to connect to, defaults to 0.
-    -   `opts.usbSerial` **[number][31]** If specified, will connect using the serialNumber.
-    -   `opts.serialType` **[number][31]** Type of device at serial port, either FT_INTELLIGENT_IF (10), FT_INTELLIGENT_IF_SLAVE (20) or FT_ROBO_IF_COM (70)
-    -   `opts.enableDistance` **[boolean][32]** Enable D1 and D2 for use with the ft distance sensor, defaults to false
-    -   `opts.startTransferArea` **[boolean][32]** Start the transfer area. Usually you want that, defaults to true
+-   `opts` **[object][29]** The connection options
+    -   `opts.deviceNumber` **[number][30]** The number of the device to connect to, defaults to 0.
+    -   `opts.usbSerial` **[number][30]** If specified, will connect using the serialNumber.
+    -   `opts.serialType` **[number][30]** Type of device at serial port, either FT_INTELLIGENT_IF (10), FT_INTELLIGENT_IF_SLAVE (20) or FT_ROBO_IF_COM (70)
+    -   `opts.enableDistance` **[boolean][31]** Enable D1 and D2 for use with the ft distance sensor, defaults to false
+    -   `opts.startTransferArea` **[boolean][31]** Start the transfer area. Usually you want that, defaults to true
 
 ### Examples
 
@@ -69,7 +68,7 @@ if(libroboint.hasInterface()){
 }
 ```
 
-Returns **[boolean][32]** 
+Returns **[boolean][31]** 
 
 ## getDeviceType
 
@@ -88,13 +87,13 @@ Returns the type of the interface (as integer), which is one of
     FT_ROBO_RF_DATA_LINK        110     // FT-Robo RF Data Link
     FT_SOUND_AND_LIGHTS         120     // FT-Sound + Lights Module
 
-Returns **[number][31]** 
+Returns **[number][30]** 
 
 ## getDeviceTypeString
 
 Returns a string that identifies this interface in a human readable form like "Robo Interface"
 
-Returns **[string][33]** 
+Returns **[string][32]** 
 
 ## setMotor
 
@@ -102,9 +101,9 @@ Sets a motor's speed and direction
 
 ### Parameters
 
--   `motor` **[number][31]** The motor number, 1-4, with I/O Extensions also 5-8, 9-12, 13-16
--   `direction` **[number][31]** The direction. one of libroboint.MOTOR_DIR_LEFT (1), libroboint.MOTOR_DIR_RIGHT (2), libroboint.MOTOR_DIR_STOP (0)
--   `speed` **[number][31]?** The speed between 0 and 7. Defaults to 7
+-   `motor` **[number][30]** The motor number, 1-4, with I/O Extensions also 5-8, 9-12, 13-16
+-   `direction` **[number][30]** The direction. one of libroboint.MOTOR_DIR_LEFT (1), libroboint.MOTOR_DIR_RIGHT (2), libroboint.MOTOR_DIR_STOP (0)
+-   `speed` **[number][30]?** The speed between 0 and 7. Defaults to 7
 
 ### Examples
 
@@ -124,7 +123,7 @@ Gets the state of a digital input.
 
 ### Parameters
 
--   `inputNumber` **[number][31]** The input between 1 and Max
+-   `inputNumber` **[number][30]** The input between 1 and Max
 
 ### Examples
 
@@ -134,43 +133,43 @@ libroboint.connect();
 console.log(libroboint.getInput(1));
 ```
 
-Returns **[number][31]** 1 or 0
+Returns **[number][30]** 1 or 0
 
 ## getA1
 
 Reads analog input A1
 
-Returns **[number][31]** The voltage between 0 and 1023
+Returns **[number][30]** The voltage between 0 and 1023
 
 ## getA2
 
 Reads analog input A2
 
-Returns **[number][31]** The voltage between 0 and 1023
+Returns **[number][30]** The voltage between 0 and 1023
 
 ## getAX
 
 Reads analog input AX
 
-Returns **[number][31]** The resistor value between 0 and 1023
+Returns **[number][30]** The resistor value between 0 and 1023
 
 ## getAY
 
 Reads analog input AY
 
-Returns **[number][31]** The resistor value between 0 and 1023
+Returns **[number][30]** The resistor value between 0 and 1023
 
 ## getD1
 
 Reads analog input D1
 
-Returns **[number][31]** The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"
+Returns **[number][30]** The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"
 
 ## getD2
 
 Reads analog input D2
 
-Returns **[number][31]** The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"
+Returns **[number][30]** The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"
 
 ## addon
 
@@ -205,10 +204,6 @@ libroboint.close();
 -   `theLoop`  
 -   `interval`   (optional, default `50`)
 
-## checkCounters
-
-Checking registered input counters (once per loop iteration)
-
 ## useCounter
 
 Use within loop to count "switching" on a digital input.
@@ -217,7 +212,7 @@ Handy when using a mini switch on a axle.
 
 ### Parameters
 
--   `inputNumber` **[number][31]** 
+-   `inputNumber` **[number][30]** 
 
 ### Examples
 
@@ -279,18 +274,16 @@ if (c > 10) {
 
 [25]: #parameters-3
 
-[26]: #checkcounters
+[26]: #usecounter
 
-[27]: #usecounter
+[27]: #parameters-4
 
-[28]: #parameters-4
+[28]: #examples-6
 
-[29]: #examples-6
+[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
 
-[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 
-[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
-
-[33]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
