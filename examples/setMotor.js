@@ -9,19 +9,19 @@ const libroboint = require('../lib/index');
 async function program() {
     const M1 = 1;
 
-    const ri = new libroboint.RoboInterface();
+    libroboint.connect();
 
-    ri.setMotor(M1, libroboint.MOTOR_DIR_RIGHT, 2);
+    libroboint.setMotor(M1, libroboint.MOTOR_DIR_RIGHT, 2);
     await sleep(500);
-    ri.setMotor(M1, libroboint.MOTOR_DIR_LEFT, 3);
+    libroboint.setMotor(M1, libroboint.MOTOR_DIR_LEFT, 3);
     await sleep(500);
-    ri.setMotor(M1, libroboint.MOTOR_DIR_RIGHT, 4);
+    libroboint.setMotor(M1, libroboint.MOTOR_DIR_RIGHT, 4);
     await sleep(500);
-    ri.setMotor(M1, libroboint.MOTOR_DIR_LEFT, 5);
+    libroboint.setMotor(M1, libroboint.MOTOR_DIR_LEFT, 5);
     await sleep(500);
-    ri.setMotor(M1, libroboint.MOTOR_DIR_STOP);
+    libroboint.setMotor(M1, libroboint.MOTOR_DIR_STOP);
     await sleep(500);
-    ri.close();
+    libroboint.close();
 }
 
 program();

@@ -4,7 +4,7 @@
 
 const libroboint = require('../lib/index');
 
-const ri = new libroboint.RoboInterface({
+libroboint.connect({
     deviceNumber: 0,
     //  usbSerial:12345,
     startTransferArea: false,
@@ -14,10 +14,10 @@ const ri = new libroboint.RoboInterface({
 });
 
 // this works without starting transfer area
-console.log('type', ri.getDeviceType(), ri.getDeviceTypeString());
+console.log('type', libroboint.getDeviceType(), libroboint.getDeviceTypeString());
 
-if (!ri.hasInterface()) {
+if (!libroboint.hasInterface()) {
     console.log('we did not start transferArea. hasInterface() returns false.');
 }
 
-ri.close();
+libroboint.close();

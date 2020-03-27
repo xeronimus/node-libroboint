@@ -4,24 +4,29 @@
 
 const libroboint = require('../lib/index');
 
-const ri = new libroboint.RoboInterface({
+libroboint.connect({
     enableDistance: false,
 });
 
-console.log('A1', ri.getA1());
-console.log('A2', ri.getA2());
-console.log('AY', ri.getAY());
-console.log('AX', ri.getAX());
-console.log('D1', ri.getD1());
-console.log('D2', ri.getD2());
+console.log('A1', libroboint.getA1());
+console.log('A2', libroboint.getA2());
+console.log('AX', libroboint.getAX());
+console.log('AY', libroboint.getAY());
+console.log('D1', libroboint.getD1());
+console.log('D2', libroboint.getD2());
 
-ri.close();
+libroboint.close();
 
-const ri2 = new libroboint.RoboInterface({
+// now connect again with "enableDistance=true"
+libroboint.connect({
     enableDistance: true,
 });
 
-console.log('D1', ri2.getD1());
-console.log('D2', ri2.getD2());
+console.log('A1', libroboint.getA1());
+console.log('A2', libroboint.getA2());
+console.log('AX', libroboint.getAX());
+console.log('AY', libroboint.getAY());
+console.log('D1', libroboint.getD1());
+console.log('D2', libroboint.getD2());
 
-ri2.close();
+libroboint.close();

@@ -9,10 +9,10 @@
 
 Napi::FunctionReference RoboInterface::constructor;
 
-/*
-
- Is called when module is registered. will return node module
-
+/**
+*
+* Is called when module is registered. will return node module
+*
 */
 Napi::Object RoboInterface::Init(Napi::Env env, Napi::Object exports) {
   Napi::HandleScope scope(env);
@@ -42,10 +42,10 @@ Napi::Object RoboInterface::Init(Napi::Env env, Napi::Object exports) {
   return exports;
 }
 
-/*
-
-Parses constructor arguments into RI_OPTIONS
-
+/**
+*
+* Parses constructor arguments into RI_OPTIONS
+*
 */
 RI_OPTIONS parseConstructorOptions(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
@@ -93,15 +93,11 @@ RI_OPTIONS parseConstructorOptions(const Napi::CallbackInfo &info) {
   return opts;
 }
 
-/*
-
- The constructor
- called when instantiating a new RoboInterface
-
- const ri = new libroboint.RoboInterface();
- // do some stuff, and remember to close afterwards... ri.close();
-
-
+/**
+*
+* The constructor
+* called when instantiating a new RoboInterface
+*
 */
 RoboInterface::RoboInterface(const Napi::CallbackInfo &info) : Napi::ObjectWrap<RoboInterface>(info) {
   this->transfer_area = NULL;
@@ -138,23 +134,23 @@ RoboInterface::RoboInterface(const Napi::CallbackInfo &info) : Napi::ObjectWrap<
   }
 }
 
-/*
-
- Returns the type of the interface (as integer), which is one of
-
- NO_FT_DEVICE                0       // No ft Device connected
- FT_AUTO_TYPE                1       // Search for Device
- FT_INTELLIGENT_IF           10      // FT-Intelligent Interface connect (serial)
- FT_INTELLIGENT_IF_SLAVE     20      // FT-Intelligent Interface with Extension connect (serial)
- FT_ROBO_IF_IIM              50      // FT-Robo Interface with Intelligent-Interface-Modus connect (serial)
- FT_ROBO_IF_USB              60      // FT-Robo Interface connect with USB-Port
- FT_ROBO_IF_COM              70      // FT-Robo Interface connect with COM- (serial-) Port
- FT_ROBO_IF_OVER_RF          80      // FT-Robo Interface connect over RF-Data-Link
- FT_ROBO_IO_EXTENSION        90      // FT-Robo I/O-Extension
- FT_ROBO_LT_CONTROLLER       91      // FT-Robo LT Controller
- FT_ROBO_RF_DATA_LINK        110     // FT-Robo RF Data Link
- FT_SOUND_AND_LIGHTS         120     // FT-Sound + Lights Module
-
+/**
+*
+* Returns the type of the interface (as integer), which is one of
+*
+* NO_FT_DEVICE                0       // No ft Device connected
+* FT_AUTO_TYPE                1       // Search for Device
+* FT_INTELLIGENT_IF           10      // FT-Intelligent Interface connect (serial)
+* FT_INTELLIGENT_IF_SLAVE     20      // FT-Intelligent Interface with Extension connect (serial)
+* FT_ROBO_IF_IIM              50      // FT-Robo Interface with Intelligent-Interface-Modus connect (serial)
+* FT_ROBO_IF_USB              60      // FT-Robo Interface connect with USB-Port
+* FT_ROBO_IF_COM              70      // FT-Robo Interface connect with COM- (serial-) Port
+* FT_ROBO_IF_OVER_RF          80      // FT-Robo Interface connect over RF-Data-Link
+* FT_ROBO_IO_EXTENSION        90      // FT-Robo I/O-Extension
+* FT_ROBO_LT_CONTROLLER       91      // FT-Robo LT Controller
+* FT_ROBO_RF_DATA_LINK        110     // FT-Robo RF Data Link
+* FT_SOUND_AND_LIGHTS         120     // FT-Sound + Lights Module
+*
 */
 Napi::Value RoboInterface::GetDeviceType(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
@@ -162,14 +158,14 @@ Napi::Value RoboInterface::GetDeviceType(const Napi::CallbackInfo &info) {
   if (this->hFt) {
     return Napi::Number::New(env, GetFtDeviceTyp(this->hFt));
   } else {
-    return env.Null();
+    return Napi::Number::New(env, 0);
   }
 }
 
-/*
-
-Returns a string that identifies this interface in a human readable form like "Robo Interface"
-
+/**
+*
+* Returns a string that identifies this interface in a human readable form like "Robo Interface"
+*
 */
 Napi::Value RoboInterface::GetDeviceTypeString(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
@@ -179,21 +175,15 @@ Napi::Value RoboInterface::GetDeviceTypeString(const Napi::CallbackInfo &info) {
     GetFtDeviceTypeString(this->hFt, result, 128);
     return Napi::String::New(env, result);
   } else {
-    return env.Null();
+    return Napi::String::New(env, "0");
   }
 }
 
-/*
-
- Tells if we have a connection to the Interface
-
- Useful to call after the constructor., e.g:
-        const ri = new libroboint.RoboInterface();
-
-        if(ri.hasInterface()){
-         // do something
-        }
-
+/**
+*
+* Tells if we have a connection to the Interface
+*
+*
 */
 Napi::Value RoboInterface::HasInterface(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
@@ -205,15 +195,10 @@ Napi::Value RoboInterface::HasInterface(const Napi::CallbackInfo &info) {
   }
 }
 
-/*
-
- Closes the connection to the ftDevice. Currently this must be called manually from your JS code.
-
- const ri = new libroboint.RoboInterface();
- // do some stuff
- ri.close();
-
-
+/**
+*
+* Closes the connection to the ftDevice
+*
 */
 Napi::Value RoboInterface::Close(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
@@ -230,16 +215,10 @@ Napi::Value RoboInterface::Close(const Napi::CallbackInfo &info) {
   return env.Null();
 }
 
-/*
-
- Set a Motor's speed and direction
-
- Example Usage in JS:
-
- ri.setMotor(1, 0); // stop motor 1
- ri.setMotor(2, 1, 5); // start motor 2, direction left (1) with speed 5
- ri.setMotor(2, 2); // start motor 2, direction right  (2) with default speed (max = 7)
-
+/**
+*
+* Set a Motor's speed and direction
+*
 */
 Napi::Value RoboInterface::SetMotor(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
@@ -307,9 +286,11 @@ Napi::Value RoboInterface::SetMotor(const Napi::CallbackInfo &info) {
   return env.Null();
 }
 
-/*
- Gets the state of a digital input. Pass in the number of the input (1...Max).
- Will return 1 or 0
+/**
+ *
+ * Gets the state of a digital input. Pass in the number of the input (1...Max).
+ * Will return 1 or 0
+ *
 */
 Napi::Value RoboInterface::GetInput(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
@@ -356,10 +337,10 @@ Napi::Value RoboInterface::GetInput(const Napi::CallbackInfo &info) {
   return result;
 }
 
-/*
-
- helper function that reads a anlog input (A1, A2, AX, AY, D1, D2)
-
+/**
+*
+* helper function that reads a analog input (A1, A2, AX, AY, D1, D2)
+*
 */
 Napi::Value _getAnalogInput(FT_TRANSFER_AREA *transfer_area, int analogInput, const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
@@ -400,55 +381,55 @@ Napi::Value _getAnalogInput(FT_TRANSFER_AREA *transfer_area, int analogInput, co
   return result;
 }
 
-/*
-
- Reads analog voltage input A1
-
+/**
+*
+* Reads analog voltage input A1
+*
 */
 Napi::Value RoboInterface::GetA1(const Napi::CallbackInfo &info) {
   return _getAnalogInput(this->transfer_area, 1, info);
 }
 
-/*
-
- Reads analog voltage input A2
-
+/**
+*
+* Reads analog voltage input A2
+*
 */
 Napi::Value RoboInterface::GetA2(const Napi::CallbackInfo &info) {
   return _getAnalogInput(this->transfer_area, 2, info);
 }
 
-/*
-
- Reads analog resistor input AX
-
+/**
+*
+* Reads analog resistor input AX
+*
 */
 Napi::Value RoboInterface::GetAX(const Napi::CallbackInfo &info) {
   return _getAnalogInput(this->transfer_area, 3, info);
 }
 
-/*
-
- Reads analog resistor input AY
-
+/**
+*
+* Reads analog resistor input AY
+*
 */
 Napi::Value RoboInterface::GetAY(const Napi::CallbackInfo &info) {
   return _getAnalogInput(this->transfer_area, 4, info);
 }
 
-/*
-
- Reads analog (voltage or distance) input D1
-
+/**
+*
+* Reads analog (voltage or distance) input D1
+*
 */
 Napi::Value RoboInterface::GetD1(const Napi::CallbackInfo &info) {
   return _getAnalogInput(this->transfer_area, 5, info);
 }
 
-/*
-
- Reads analog (voltage or distance) input D2
-
+/**
+*
+* Reads analog (voltage or distance) input D2
+*
 */
 Napi::Value RoboInterface::GetD2(const Napi::CallbackInfo &info) {
   return _getAnalogInput(this->transfer_area, 6, info);
