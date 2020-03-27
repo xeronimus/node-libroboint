@@ -28,6 +28,6 @@ $ npm i libroboint
 
 ## Usage
 
-Check the *examples* directory to get a basic idea.
+Check the [examples](examples) directory to get a basic idea.
 
 See the [API documentation](doc/libroboint.md) for more details.

@@ -15,7 +15,7 @@
     "test": "exit 0",
     "build": "node-gyp build",
     "rebuild": "node-gyp rebuild",
-    "prebuild": "npm run format",
+    "prebuild": "npm run format && npm run doc",
     "doc": "documentation build lib/index.js -f md -o doc/libroboint.md --shallow "
   },
   "author": "",
