@@ -19,5 +19,3 @@ console.log('type', libroboint.getDeviceType(), libroboint.getDeviceTypeString()
 if (!libroboint.hasInterface()) {
     console.log('we did not start transferArea. hasInterface() returns false.');
 }
-
-libroboint.close();

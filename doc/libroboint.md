@@ -7,26 +7,30 @@
     -   [Examples][3]
 -   [hasInterface][4]
     -   [Examples][5]
--   [close][6]
-    -   [Examples][7]
--   [getDeviceType][8]
--   [getDeviceTypeString][9]
--   [setMotor][10]
-    -   [Parameters][11]
-    -   [Examples][12]
--   [getInput][13]
-    -   [Parameters][14]
-    -   [Examples][15]
--   [getA1][16]
--   [getA2][17]
--   [getAX][18]
--   [getAY][19]
--   [getD1][20]
--   [getD2][21]
--   [addon][22]
+-   [getDeviceType][6]
+-   [getDeviceTypeString][7]
+-   [setMotor][8]
+    -   [Parameters][9]
+    -   [Examples][10]
+-   [getInput][11]
+    -   [Parameters][12]
+    -   [Examples][13]
+-   [getA1][14]
+-   [getA2][15]
+-   [getAX][16]
+-   [getAY][17]
+-   [getD1][18]
+-   [getD2][19]
+-   [addon][20]
+    -   [Examples][21]
+-   [close][22]
     -   [Examples][23]
 -   [loop][24]
     -   [Parameters][25]
+-   [checkCounters][26]
+-   [useCounter][27]
+    -   [Parameters][28]
+    -   [Examples][29]
 
 ## connect
 
@@ -34,12 +38,12 @@ Connect to the Robo Interface
 
 ### Parameters
 
--   `opts` **[object][26]** The connection options
-    -   `opts.deviceNumber` **[number][27]** The number of the device to connect to, defaults to 0.
-    -   `opts.usbSerial` **[number][27]** If specified, will connect using the serialNumber.
-    -   `opts.serialType` **[number][27]** Type of device at serial port, either FT_INTELLIGENT_IF (10), FT_INTELLIGENT_IF_SLAVE (20) or FT_ROBO_IF_COM (70)
-    -   `opts.enableDistance` **[boolean][28]** Enable D1 and D2 for use with the ft distance sensor, defaults to false
-    -   `opts.startTransferArea` **[boolean][28]** Start the transfer area. Usually you want that, defaults to true
+-   `opts` **[object][30]** The connection options
+    -   `opts.deviceNumber` **[number][31]** The number of the device to connect to, defaults to 0.
+    -   `opts.usbSerial` **[number][31]** If specified, will connect using the serialNumber.
+    -   `opts.serialType` **[number][31]** Type of device at serial port, either FT_INTELLIGENT_IF (10), FT_INTELLIGENT_IF_SLAVE (20) or FT_ROBO_IF_COM (70)
+    -   `opts.enableDistance` **[boolean][32]** Enable D1 and D2 for use with the ft distance sensor, defaults to false
+    -   `opts.startTransferArea` **[boolean][32]** Start the transfer area. Usually you want that, defaults to true
 
 ### Examples
 
@@ -65,20 +69,7 @@ if(libroboint.hasInterface()){
 }
 ```
 
-Returns **[boolean][28]** 
-
-## close
-
-Closes the connection to the ftDevice. Currently this must be called manually from your JS code.
-
-### Examples
-
-```javascript
-const libroboint = require('libroboint');
-libroboint.connect();
-// do something
-libroboint.close();
-```
+Returns **[boolean][32]** 
 
 ## getDeviceType
 
@@ -97,13 +88,13 @@ Returns the type of the interface (as integer), which is one of
     FT_ROBO_RF_DATA_LINK        110     // FT-Robo RF Data Link
     FT_SOUND_AND_LIGHTS         120     // FT-Sound + Lights Module
 
-Returns **[number][27]** 
+Returns **[number][31]** 
 
 ## getDeviceTypeString
 
 Returns a string that identifies this interface in a human readable form like "Robo Interface"
 
-Returns **[string][29]** 
+Returns **[string][33]** 
 
 ## setMotor
 
@@ -111,9 +102,9 @@ Sets a motor's speed and direction
 
 ### Parameters
 
--   `motor` **[number][27]** The motor number, 1-4, with I/O Extensions also 5-8, 9-12, 13-16
--   `direction` **[number][27]** The direction. one of libroboint.MOTOR_DIR_LEFT (1), libroboint.MOTOR_DIR_RIGHT (2), libroboint.MOTOR_DIR_STOP (0)
--   `speed` **[number][27]** The speed between 0 and 7. Defaults to 7
+-   `motor` **[number][31]** The motor number, 1-4, with I/O Extensions also 5-8, 9-12, 13-16
+-   `direction` **[number][31]** The direction. one of libroboint.MOTOR_DIR_LEFT (1), libroboint.MOTOR_DIR_RIGHT (2), libroboint.MOTOR_DIR_STOP (0)
+-   `speed` **[number][31]?** The speed between 0 and 7. Defaults to 7
 
 ### Examples
 
@@ -133,7 +124,7 @@ Gets the state of a digital input.
 
 ### Parameters
 
--   `inputNumber` **[number][27]** The input between 1 and Max
+-   `inputNumber` **[number][31]** The input between 1 and Max
 
 ### Examples
 
@@ -143,43 +134,43 @@ libroboint.connect();
 console.log(libroboint.getInput(1));
 ```
 
-Returns **[number][27]** 1 or 0
+Returns **[number][31]** 1 or 0
 
 ## getA1
 
 Reads analog input A1
 
-Returns **[number][27]** The voltage between 0 and 1023
+Returns **[number][31]** The voltage between 0 and 1023
 
 ## getA2
 
 Reads analog input A2
 
-Returns **[number][27]** The voltage between 0 and 1023
+Returns **[number][31]** The voltage between 0 and 1023
 
 ## getAX
 
 Reads analog input AX
 
-Returns **[number][27]** The resistor value between 0 and 1023
+Returns **[number][31]** The resistor value between 0 and 1023
 
 ## getAY
 
 Reads analog input AY
 
-Returns **[number][27]** The resistor value between 0 and 1023
+Returns **[number][31]** The resistor value between 0 and 1023
 
 ## getD1
 
 Reads analog input D1
 
-Returns **[number][27]** The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"
+Returns **[number][31]** The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"
 
 ## getD2
 
 Reads analog input D2
 
-Returns **[number][27]** The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"
+Returns **[number][31]** The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"
 
 ## addon
 
@@ -194,12 +185,49 @@ ri.setMotor(1,libroboint.MOTOR_DIR_LEFT);
 ri.close();
 ```
 
+## close
+
+Closes the connection to the ftDevice. This is also done when the nodeJS process is terminated (SIGINT).
+
+### Examples
+
+```javascript
+const libroboint = require('libroboint');
+libroboint.connect();
+// do something
+libroboint.close();
+```
+
 ## loop
 
 ### Parameters
 
 -   `theLoop`  
 -   `interval`   (optional, default `50`)
+
+## checkCounters
+
+Checking registered input counters (once per loop iteration)
+
+## useCounter
+
+Use within loop to count "switching" on a digital input.
+This will count state change from 0 to 1.
+Handy when using a mini switch on a axle.
+
+### Parameters
+
+-   `inputNumber` **[number][31]** 
+
+### Examples
+
+```javascript
+const [c, resetC] = libroboint.useCounter(1);
+if (c > 10) {
+      console.log('reached 11, resetting');
+      resetC();
+  }
+```
 
 [1]: #connect
 
@@ -211,39 +239,39 @@ ri.close();
 
 [5]: #examples-1
 
-[6]: #close
+[6]: #getdevicetype
 
-[7]: #examples-2
+[7]: #getdevicetypestring
 
-[8]: #getdevicetype
+[8]: #setmotor
 
-[9]: #getdevicetypestring
+[9]: #parameters-1
 
-[10]: #setmotor
+[10]: #examples-2
 
-[11]: #parameters-1
+[11]: #getinput
 
-[12]: #examples-3
+[12]: #parameters-2
 
-[13]: #getinput
+[13]: #examples-3
 
-[14]: #parameters-2
+[14]: #geta1
 
-[15]: #examples-4
+[15]: #geta2
 
-[16]: #geta1
+[16]: #getax
 
-[17]: #geta2
+[17]: #getay
 
-[18]: #getax
+[18]: #getd1
 
-[19]: #getay
+[19]: #getd2
 
-[20]: #getd1
+[20]: #addon
 
-[21]: #getd2
+[21]: #examples-4
 
-[22]: #addon
+[22]: #close
 
 [23]: #examples-5
 
@@ -251,10 +279,18 @@ ri.close();
 
 [25]: #parameters-3
 
-[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[26]: #checkcounters
 
-[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[27]: #usecounter
 
-[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[28]: #parameters-4
 
-[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[29]: #examples-6
+
+[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[33]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String

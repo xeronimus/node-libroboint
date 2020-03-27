@@ -20,8 +20,6 @@ async function program() {
     libroboint.setMotor(M1, libroboint.MOTOR_DIR_LEFT, 5);
     await sleep(500);
     libroboint.setMotor(M1, libroboint.MOTOR_DIR_STOP);
-    await sleep(500);
-    libroboint.close();
 }
 
 program();
