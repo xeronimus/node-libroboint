@@ -25,3 +25,7 @@ $ sudo apt-get install libroboint-all
 ```
 $ npm i libroboint
 ```
+
+## Usage
+
+Check the *examples* directory to get a basic idea.

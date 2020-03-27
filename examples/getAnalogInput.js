@@ -5,7 +5,7 @@
 const libroboint = require('../lib/index');
 
 const ri = new libroboint.RoboInterface({
-    enableDistance: false
+    enableDistance: false,
 });
 
 console.log('A1', ri.getA1());
@@ -18,7 +18,7 @@ console.log('D2', ri.getD2());
 ri.close();
 
 const ri2 = new libroboint.RoboInterface({
-    enableDistance: true
+    enableDistance: true,
 });
 
 console.log('D1', ri2.getD1());

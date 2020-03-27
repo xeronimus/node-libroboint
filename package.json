@@ -2,6 +2,11 @@
   "name": "libroboint",
   "version": "0.0.3",
   "description": "node.js wrapper around libroboint",
+  "keywords": [
+    "Fischertechnik",
+    "Robo Interface"
+  ],
+  "repository": "https://github.com/xeronimus/node-libroboint",
   "main": "lib/index.js",
   "scripts": {
     "format": "npm run format:C && npm run format:JS",
@@ -12,7 +17,6 @@
     "rebuild": "node-gyp rebuild",
     "prebuild": "npm run format"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
