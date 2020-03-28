@@ -43,6 +43,7 @@ private:
   Napi::Value GetDeviceTypeString(const Napi::CallbackInfo &info);
 
   Napi::Value SetMotor(const Napi::CallbackInfo &info);
+  Napi::Value SetOutput(const Napi::CallbackInfo &info);
 
   Napi::Value GetInput(const Napi::CallbackInfo &info);
   Napi::Value GetA1(const Napi::CallbackInfo &info);

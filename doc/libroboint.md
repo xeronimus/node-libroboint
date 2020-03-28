@@ -12,24 +12,26 @@
 -   [setMotor][8]
     -   [Parameters][9]
     -   [Examples][10]
--   [getInput][11]
+-   [setOutput][11]
     -   [Parameters][12]
-    -   [Examples][13]
--   [getA1][14]
--   [getA2][15]
--   [getAX][16]
--   [getAY][17]
--   [getD1][18]
--   [getD2][19]
--   [addon][20]
-    -   [Examples][21]
--   [close][22]
+-   [getInput][13]
+    -   [Parameters][14]
+    -   [Examples][15]
+-   [getA1][16]
+-   [getA2][17]
+-   [getAX][18]
+-   [getAY][19]
+-   [getD1][20]
+-   [getD2][21]
+-   [addon][22]
     -   [Examples][23]
--   [loop][24]
-    -   [Parameters][25]
--   [useCounter][26]
+-   [close][24]
+    -   [Examples][25]
+-   [loop][26]
     -   [Parameters][27]
-    -   [Examples][28]
+-   [useCounter][28]
+    -   [Parameters][29]
+    -   [Examples][30]
 
 ## connect
 
@@ -37,12 +39,12 @@ Connect to the Robo Interface
 
 ### Parameters
 
--   `opts` **[object][29]** The connection options
-    -   `opts.deviceNumber` **[number][30]** The number of the device to connect to, defaults to 0.
-    -   `opts.usbSerial` **[number][30]** If specified, will connect using the serialNumber.
-    -   `opts.serialType` **[number][30]** Type of device at serial port, either FT_INTELLIGENT_IF (10), FT_INTELLIGENT_IF_SLAVE (20) or FT_ROBO_IF_COM (70)
-    -   `opts.enableDistance` **[boolean][31]** Enable D1 and D2 for use with the ft distance sensor, defaults to false
-    -   `opts.startTransferArea` **[boolean][31]** Start the transfer area. Usually you want that, defaults to true
+-   `opts` **[object][31]** The connection options
+    -   `opts.deviceNumber` **[number][32]** The number of the device to connect to, defaults to 0.
+    -   `opts.usbSerial` **[number][32]** If specified, will connect using the serialNumber.
+    -   `opts.serialType` **[number][32]** Type of device at serial port, either FT_INTELLIGENT_IF (10), FT_INTELLIGENT_IF_SLAVE (20) or FT_ROBO_IF_COM (70)
+    -   `opts.enableDistance` **[boolean][33]** Enable D1 and D2 for use with the ft distance sensor, defaults to false
+    -   `opts.startTransferArea` **[boolean][33]** Start the transfer area. Usually you want that, defaults to true
 
 ### Examples
 
@@ -68,7 +70,7 @@ if(libroboint.hasInterface()){
 }
 ```
 
-Returns **[boolean][31]** 
+Returns **[boolean][33]** 
 
 ## getDeviceType
 
@@ -87,13 +89,13 @@ Returns the type of the interface (as integer), which is one of
     FT_ROBO_RF_DATA_LINK        110     // FT-Robo RF Data Link
     FT_SOUND_AND_LIGHTS         120     // FT-Sound + Lights Module
 
-Returns **[number][30]** 
+Returns **[number][32]** 
 
 ## getDeviceTypeString
 
 Returns a string that identifies this interface in a human readable form like "Robo Interface"
 
-Returns **[string][32]** 
+Returns **[string][34]** 
 
 ## setMotor
 
@@ -101,9 +103,9 @@ Sets a motor's speed and direction
 
 ### Parameters
 
--   `motor` **[number][30]** The motor number, 1-4, with I/O Extensions also 5-8, 9-12, 13-16
--   `direction` **[number][30]** The direction. one of libroboint.MOTOR_DIR_LEFT (1), libroboint.MOTOR_DIR_RIGHT (2), libroboint.MOTOR_DIR_STOP (0)
--   `speed` **[number][30]?** The speed between 0 and 7. Defaults to 7
+-   `motor` **[number][32]** The motor number, 1-4, with I/O Extensions also 5-8, 9-12, 13-16
+-   `direction` **[number][32]** The direction. one of libroboint.MOTOR_DIR_LEFT (1), libroboint.MOTOR_DIR_RIGHT (2), libroboint.MOTOR_DIR_STOP (0)
+-   `speed` **[number][32]?** The speed between 0 and 7. Defaults to 7
 
 ### Examples
 
@@ -117,13 +119,22 @@ libroboint.setMotor(2, libroboint.MOTOR_DIR_RIGHT); // start motor 2, direction 
 
 Returns **any** null
 
+## setOutput
+
+Sets a outputs's power
+
+### Parameters
+
+-   `output` **[number][32]** The putput number, 1-8, with I/O Extensions also 9-16, 17-24, 25-32
+-   `power` **[number][32]?** The power between 0 and 7. Defaults to 7
+
 ## getInput
 
 Gets the state of a digital input.
 
 ### Parameters
 
--   `inputNumber` **[number][30]** The input between 1 and Max
+-   `inputNumber` **[number][32]** The input between 1 and Max
 
 ### Examples
 
@@ -133,43 +144,43 @@ libroboint.connect();
 console.log(libroboint.getInput(1));
 ```
 
-Returns **[number][30]** 1 or 0
+Returns **[number][32]** 1 or 0
 
 ## getA1
 
 Reads analog input A1
 
-Returns **[number][30]** The voltage between 0 and 1023
+Returns **[number][32]** The voltage between 0 and 1023
 
 ## getA2
 
 Reads analog input A2
 
-Returns **[number][30]** The voltage between 0 and 1023
+Returns **[number][32]** The voltage between 0 and 1023
 
 ## getAX
 
 Reads analog input AX
 
-Returns **[number][30]** The resistor value between 0 and 1023
+Returns **[number][32]** The resistor value between 0 and 1023
 
 ## getAY
 
 Reads analog input AY
 
-Returns **[number][30]** The resistor value between 0 and 1023
+Returns **[number][32]** The resistor value between 0 and 1023
 
 ## getD1
 
 Reads analog input D1
 
-Returns **[number][30]** The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"
+Returns **[number][32]** The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"
 
 ## getD2
 
 Reads analog input D2
 
-Returns **[number][30]** The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"
+Returns **[number][32]** The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"
 
 ## addon
 
@@ -212,7 +223,7 @@ Handy when using a mini switch on a axle.
 
 ### Parameters
 
--   `inputNumber` **[number][30]** 
+-   `inputNumber` **[number][32]** 
 
 ### Examples
 
@@ -244,46 +255,50 @@ if (c > 10) {
 
 [10]: #examples-2
 
-[11]: #getinput
+[11]: #setoutput
 
 [12]: #parameters-2
 
-[13]: #examples-3
+[13]: #getinput
 
-[14]: #geta1
+[14]: #parameters-3
 
-[15]: #geta2
+[15]: #examples-3
 
-[16]: #getax
+[16]: #geta1
 
-[17]: #getay
+[17]: #geta2
 
-[18]: #getd1
+[18]: #getax
 
-[19]: #getd2
+[19]: #getay
 
-[20]: #addon
+[20]: #getd1
 
-[21]: #examples-4
+[21]: #getd2
 
-[22]: #close
+[22]: #addon
 
-[23]: #examples-5
+[23]: #examples-4
 
-[24]: #loop
+[24]: #close
 
-[25]: #parameters-3
+[25]: #examples-5
 
-[26]: #usecounter
+[26]: #loop
 
 [27]: #parameters-4
 
-[28]: #examples-6
+[28]: #usecounter
 
-[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[29]: #parameters-5
 
-[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[30]: #examples-6
 
-[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[33]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[34]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String

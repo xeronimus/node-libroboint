@@ -26,7 +26,7 @@ Napi::Object RoboInterface::Init(Napi::Env env, Napi::Object exports) {
           InstanceMethod("getDeviceType", &RoboInterface::GetDeviceType),
           InstanceMethod("getDeviceTypeString", &RoboInterface::GetDeviceTypeString),
 
-          InstanceMethod("setMotor", &RoboInterface::SetMotor),
+          InstanceMethod("setMotor", &RoboInterface::SetMotor), InstanceMethod("setOutput", &RoboInterface::SetOutput),
 
           InstanceMethod("getInput", &RoboInterface::GetInput), InstanceMethod("getA1", &RoboInterface::GetA1),
           InstanceMethod("getA2", &RoboInterface::GetA2), InstanceMethod("getAX", &RoboInterface::GetAX),
@@ -281,6 +281,82 @@ Napi::Value RoboInterface::SetMotor(const Napi::CallbackInfo &info) {
     this->transfer_area->M_Sub3 |= direction << (motor - 1) * 2;
     this->transfer_area->MPWM_Sub3[(motor - 1) * 2] = speed;
     this->transfer_area->MPWM_Sub3[(motor - 1) * 2 + 1] = speed;
+  }
+
+  return env.Null();
+}
+
+/**
+*
+* Set an output's power
+*
+*/
+Napi::Value RoboInterface::SetOutput(const Napi::CallbackInfo &info) {
+  Napi::Env env = info.Env();
+
+  if (!this->transfer_area) {
+    Napi::TypeError::New(env, "Cannot setOutput, not connected...").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  //--   check input parameters
+  if (info.Length() < 1) {
+    Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  if (!info[0].IsNumber() || (info.Length() > 1 && !info[1].IsNumber())) {
+    Napi::TypeError::New(env, "Wrong arguments, pass in two numbers").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  int output = info[0].As<Napi::Number>().Int32Value();
+  int speed = info.Length() > 1 ? info[1].As<Napi::Number>().Int32Value() : 7;
+
+  if (output < 0 || output > 32) {
+    Napi::TypeError::New(env, "Output must be between 0 and 32").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  if (speed < 0 || speed > 7) {
+    Napi::TypeError::New(env, "Speed must be between 0 and 7").ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  if (output <= 8) {
+    if (speed == 0) {
+      this->transfer_area->M_Main &= ~(1 << (output - 1));
+    } else {
+      this->transfer_area->M_Main |= (1 << (output - 1));
+    }
+    this->transfer_area->MPWM_Main[output - 1] = speed;
+  } else if (output <= 16) {
+    output -= 8;
+
+    if (speed == 0) {
+      this->transfer_area->M_Sub1 &= ~(1 << (output - 1));
+    } else {
+      this->transfer_area->M_Sub1 |= (1 << (output - 1));
+    }
+    this->transfer_area->MPWM_Sub1[output - 1] = speed;
+  } else if (output <= 24) {
+    output -= 16;
+
+    if (speed == 0) {
+      this->transfer_area->M_Sub2 &= ~(1 << (output - 1));
+    } else {
+      this->transfer_area->M_Sub2 |= (1 << (output - 1));
+    }
+    this->transfer_area->MPWM_Sub2[output - 1] = speed;
+  } else if (output <= 32) {
+    output -= 24;
+
+    if (speed == 0) {
+      this->transfer_area->M_Sub3 &= ~(1 << (output - 1));
+    } else {
+      this->transfer_area->M_Sub3 |= (1 << (output - 1));
+    }
+    this->transfer_area->MPWM_Sub3[output - 1] = speed;
   }
 
   return env.Null();
