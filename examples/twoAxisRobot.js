@@ -7,7 +7,6 @@ const libroboint = require('../lib/index');
 
 libroboint.connect();
 
-
 // turning constants
 const TURN_END_SWITCH = 1; // the input of the mini touch sensor that marks end position
 const TURN_COUNT_SWITCH = 5; // the input of the mini touch sensor on the turn motor
@@ -15,7 +14,6 @@ const TURN_SPEED = 5; // how fast should the robot turn
 const TURN_ES_TOWARDS = libroboint.MOTOR_DIR_LEFT;
 const TURN_ES_AWAY = libroboint.MOTOR_DIR_RIGHT;
 const MOTOR_TURN = 1; // Motor output for turning
-
 
 // arm constants
 const ARM_END_SWITCH = 2; // the input of the mini touch sensor at the top of the arm
@@ -25,13 +23,11 @@ const ARM_ES_TOWARDS = libroboint.MOTOR_DIR_LEFT;
 const ARM_ES_AWAY = libroboint.MOTOR_DIR_RIGHT;
 const MOTOR_ARM = 2; // Motor output for the arm
 
-
 const MOTOR_LIGHT = 3;
 
 let initTurnPositionReached = false;
 let initArmPositionReached = false;
 libroboint.loop((endCb, loopCounter) => {
-
     // initializing state
     if (!initTurnPositionReached) {
         libroboint.setMotor(MOTOR_TURN, TURN_ES_TOWARDS, TURN_SPEED);
@@ -40,7 +36,6 @@ libroboint.loop((endCb, loopCounter) => {
             libroboint.setMotor(MOTOR_TURN, libroboint.MOTOR_DIR_STOP);
         }
     }
-
 
     if (!initArmPositionReached) {
         libroboint.setMotor(MOTOR_ARM, ARM_ES_TOWARDS, ARM_SPEED);
@@ -51,16 +46,13 @@ libroboint.loop((endCb, loopCounter) => {
     }
 
     if (!initArmPositionReached || !initTurnPositionReached) {
-        return
+        return;
     }
-
-
 
     // robot is moving
 
     const [turnCounter, resetTurnCounter] = libroboint.useCounter(TURN_COUNT_SWITCH);
     const [armCounter, resetArmCounter] = libroboint.useCounter(ARM_COUNT_SWITCH);
-
 
     if (libroboint.getInput(TURN_END_SWITCH)) {
         // we reached end position, reverse direction
@@ -77,7 +69,6 @@ libroboint.loop((endCb, loopCounter) => {
         // turn the light off
         libroboint.setMotor(MOTOR_LIGHT, libroboint.MOTOR_DIR_STOP);
     }
-
 
     if (libroboint.getInput(ARM_END_SWITCH)) {
         // we reached end position, reverse direction
