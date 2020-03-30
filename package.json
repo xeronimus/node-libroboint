@@ -16,7 +16,7 @@
     "build": "node-gyp build",
     "rebuild": "node-gyp rebuild",
     "prebuild": "npm run format && npm run doc",
-    "doc": "documentation build lib/index.js -f md -o doc/libroboint.md --shallow "
+    "doc": "jsdoc2md lib/index.js > doc/libroboint.md"
   },
   "author": "",
   "license": "ISC",
@@ -25,7 +25,7 @@
     "node-addon-api": "^2.0.0"
   },
   "devDependencies": {
-    "documentation": "^12.1.4",
+    "jsdoc-to-markdown": "^5.0.3",
     "prettier": "^2.0.2"
   }
 }
