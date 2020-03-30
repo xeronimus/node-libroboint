@@ -9,7 +9,7 @@ The single entry point for interacting with the ROBO Interface
     * [.MOTOR_DIR_LEFT](#module_libroboint.MOTOR_DIR_LEFT)
     * [.MOTOR_DIR_RIGHT](#module_libroboint.MOTOR_DIR_RIGHT)
     * [.MOTOR_DIR_STOP](#module_libroboint.MOTOR_DIR_STOP)
-    * [.connect(opts)](#module_libroboint.connect)
+    * [.connect([opts])](#module_libroboint.connect)
     * [.hasInterface()](#module_libroboint.hasInterface) ⇒ <code>boolean</code>
     * [.close()](#module_libroboint.close)
     * [.getDeviceTypeString()](#module_libroboint.getDeviceTypeString) ⇒ <code>string</code>
@@ -54,14 +54,14 @@ ri.close();
 **Kind**: static constant of [<code>libroboint</code>](#module_libroboint)  
 <a name="module_libroboint.connect"></a>
 
-### libroboint.connect(opts)
+### libroboint.connect([opts])
 Connect to the Robo Interface
 
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| opts | <code>Object</code> | The connection options |
+| [opts] | <code>Object</code> | The connection options. Optional. |
 | opts.deviceNumber | <code>number</code> | The number of the device to connect to, defaults to 0. |
 | opts.usbSerial | <code>number</code> | If specified, will connect using the serialNumber. |
 | opts.serialType | <code>number</code> | Type of device at serial port, either FT_INTELLIGENT_IF (10), FT_INTELLIGENT_IF_SLAVE (20) or FT_ROBO_IF_COM (70) |
@@ -138,11 +138,11 @@ Sets a motor's speed and direction
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 **Returns**: null  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| motor | <code>number</code> | The motor number, 1-4, with I/O Extensions also 5-8, 9-12, 13-16 |
-| direction | <code>number</code> | The direction. one of libroboint.MOTOR_DIR_LEFT (1), libroboint.MOTOR_DIR_RIGHT (2), libroboint.MOTOR_DIR_STOP (0) |
-| [speed] | <code>number</code> | The speed between 0 and 7. Defaults to 7 |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| motor | <code>number</code> |  | The motor number, 1-4, with I/O Extensions also 5-8, 9-12, 13-16 |
+| direction | <code>number</code> |  | The direction. one of libroboint.MOTOR_DIR_LEFT (1), libroboint.MOTOR_DIR_RIGHT (2), libroboint.MOTOR_DIR_STOP (0) |
+| [speed] | <code>number</code> | <code>7</code> | The speed between 0 and 7. Optional. Defaults to 7 |
 
 **Example**  
 ```js
@@ -159,10 +159,10 @@ Sets a outputs's power
 
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| output | <code>number</code> | The putput number, 1-8, with I/O Extensions also 9-16, 17-24, 25-32 |
-| [power] | <code>number</code> | The power between 0 and 7. Defaults to 7 |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| output | <code>number</code> |  | The putput number, 1-8, with I/O Extensions also 9-16, 17-24, 25-32 |
+| [power] | <code>number</code> | <code>7</code> | The power between 0 and 7. Optional. Defaults to 7 |
 
 <a name="module_libroboint.getInput"></a>
 
