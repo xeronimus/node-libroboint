@@ -29,6 +29,9 @@ The single entry point for interacting with the ROBO Interface
 <a name="module_libroboint.RoboInterface"></a>
 
 ### libroboint.RoboInterface
+If you need multiple instances (e.g. two Robo interfaces on two separate USB ports), you can use the class directly.
+Remember to call *close* on each of your instances.
+
 **Kind**: static constant of [<code>libroboint</code>](#module_libroboint)  
 **Example**  
 ```js
@@ -52,6 +55,8 @@ ri.close();
 <a name="module_libroboint.connect"></a>
 
 ### libroboint.connect(opts)
+Connect to the Robo Interface
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 
 | Param | Type | Description |
@@ -73,6 +78,9 @@ libroboint.connect({
 <a name="module_libroboint.hasInterface"></a>
 
 ### libroboint.hasInterface() ⇒ <code>boolean</code>
+Tells if we have a connection to the Interface.
+Useful to call after "connect()"
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 **Example**  
 ```js
@@ -85,6 +93,8 @@ if(libroboint.hasInterface()){
 <a name="module_libroboint.close"></a>
 
 ### libroboint.close()
+Closes the connection to the ftDevice. This is also done when the nodeJS process is terminated (SIGINT).
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 **Example**  
 ```js
@@ -96,14 +106,35 @@ libroboint.close();
 <a name="module_libroboint.getDeviceTypeString"></a>
 
 ### libroboint.getDeviceTypeString() ⇒ <code>string</code>
+Returns a string that identifies this interface in a human readable form like "Robo Interface"
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 <a name="module_libroboint.getDeviceType"></a>
 
 ### libroboint.getDeviceType() ⇒ <code>number</code>
+Returns the type of the interface (as integer), which is one of
+
+```
+NO_FT_DEVICE                0       // No ft Device connected
+FT_AUTO_TYPE                1       // Search for Device
+FT_INTELLIGENT_IF           10      // FT-Intelligent Interface connect (serial)
+FT_INTELLIGENT_IF_SLAVE     20      // FT-Intelligent Interface with Extension connect (serial)
+FT_ROBO_IF_IIM              50      // FT-Robo Interface with Intelligent-Interface-Modus connect (serial)
+FT_ROBO_IF_USB              60      // FT-Robo Interface connect with USB-Port
+FT_ROBO_IF_COM              70      // FT-Robo Interface connect with COM- (serial-) Port
+FT_ROBO_IF_OVER_RF          80      // FT-Robo Interface connect over RF-Data-Link
+FT_ROBO_IO_EXTENSION        90      // FT-Robo I/O-Extension
+FT_ROBO_LT_CONTROLLER       91      // FT-Robo LT Controller
+FT_ROBO_RF_DATA_LINK        110     // FT-Robo RF Data Link
+FT_SOUND_AND_LIGHTS         120     // FT-Sound + Lights Module
+```
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 <a name="module_libroboint.setMotor"></a>
 
 ### libroboint.setMotor(motor, direction, [speed]) ⇒
+Sets a motor's speed and direction
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 **Returns**: null  
 
@@ -124,6 +155,8 @@ libroboint.setMotor(2, libroboint.MOTOR_DIR_RIGHT); // start motor 2, direction 
 <a name="module_libroboint.setOutput"></a>
 
 ### libroboint.setOutput(output, [power])
+Sets a outputs's power
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 
 | Param | Type | Description |
@@ -134,6 +167,8 @@ libroboint.setMotor(2, libroboint.MOTOR_DIR_RIGHT); // start motor 2, direction 
 <a name="module_libroboint.getInput"></a>
 
 ### libroboint.getInput(inputNumber) ⇒ <code>number</code>
+Gets the state of a digital input.
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 **Returns**: <code>number</code> - 1 or 0  
 
@@ -150,31 +185,43 @@ console.log(libroboint.getInput(1));
 <a name="module_libroboint.getA1"></a>
 
 ### libroboint.getA1() ⇒ <code>number</code>
+Reads analog input A1
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 **Returns**: <code>number</code> - The voltage between 0 and 1023  
 <a name="module_libroboint.getA2"></a>
 
 ### libroboint.getA2() ⇒ <code>number</code>
+Reads analog input A2
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 **Returns**: <code>number</code> - The voltage between 0 and 1023  
 <a name="module_libroboint.getAX"></a>
 
 ### libroboint.getAX() ⇒ <code>number</code>
+Reads analog input AX
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 **Returns**: <code>number</code> - The resistor value between 0 and 1023  
 <a name="module_libroboint.getAY"></a>
 
 ### libroboint.getAY() ⇒ <code>number</code>
+Reads analog input AY
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 **Returns**: <code>number</code> - The resistor value between 0 and 1023  
 <a name="module_libroboint.getD1"></a>
 
 ### libroboint.getD1() ⇒ <code>number</code>
+Reads analog input D1
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 **Returns**: <code>number</code> - The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"  
 <a name="module_libroboint.getD2"></a>
 
 ### libroboint.getD2() ⇒ <code>number</code>
+Reads analog input D2
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 **Returns**: <code>number</code> - The voltage or distance value between 0 and 1023. Depending on connect option flag "enableDistance"  
 <a name="module_libroboint.loop"></a>
@@ -182,14 +229,18 @@ console.log(libroboint.getInput(1));
 ### libroboint.loop(theLoop, interval)
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 
-| Param | Default |
-| --- | --- |
-| theLoop |  | 
-| interval | <code>50</code> | 
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| theLoop | <code>function</code> |  |  |
+| interval | <code>number</code> | <code>50</code> | The interval in milliseconds |
 
 <a name="module_libroboint.useCounter"></a>
 
 ### libroboint.useCounter(inputNumber)
+Use within loop to count "switching" on a digital input.
+This will count state change from 0 to 1.
+Handy when using a mini switch on a axle.
+
 **Kind**: static method of [<code>libroboint</code>](#module_libroboint)  
 
 | Param | Type |
