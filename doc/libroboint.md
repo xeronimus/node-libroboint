@@ -164,6 +164,13 @@ Sets a outputs's power
 | output | <code>number</code> |  | The putput number, 1-8, with I/O Extensions also 9-16, 17-24, 25-32 |
 | [power] | <code>number</code> | <code>7</code> | The power between 0 and 7. Optional. Defaults to 7 |
 
+**Example**  
+```js
+const libroboint = require('libroboint');
+libroboint.connect();
+libroboint.setOutput(7); // set output 7 on (default power)
+libroboint.setOutput(2, 5); // set output 2 on, with power 5
+```
 <a name="module_libroboint.getInput"></a>
 
 ### libroboint.getInput(inputNumber) ⇒ <code>number</code>
